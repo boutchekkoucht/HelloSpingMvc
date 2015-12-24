@@ -1,9 +1,19 @@
 package com.ensas.ecommerce.daos;
 
+import java.beans.Expression;
 import java.util.List;
 
+
+
+
+
+
+
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -51,9 +61,16 @@ public class DaoClient implements IDaoClient {
 		public Client getClientByNameAndPasse(String email, String pass) {
 			
 			Session session=sessionFactory.getCurrentSession();
-			List<Client> li=session.createQuery("from Client").list();
-			if(li==null)
+			Criteria cri= session.createCriteria(Client.class);
+			cri.add(Restrictions.eq("email", email));
+			cri.add(Restrictions.eq("motpasse", pass));
+			
+			List<Client> li=cri.list();
+			if(li.size()==0){
+				
 				return null;
+			}
+			System.out.println("++"+li.get(0).getId()+"////");
 			return li.get(0);
 		}
 

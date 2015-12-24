@@ -29,11 +29,12 @@ public class  ServiceClient implements IServiceClient{
 	@Transactional
 	public void retirer(int  id, double solde) {
 		Client c= dao.getClient(id);
-		c.setSolde(solde);
+		c.setSolde(c.getSolde()-solde);
 		dao.updateClient(c);
 	}
 
 	@Override
+	@Transactional
 	public boolean login(String email, String pass) {
 		
 		if(dao.getClientByNameAndPasse(email, pass)==null)
